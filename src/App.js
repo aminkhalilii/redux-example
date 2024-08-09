@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import Posts from "./components/Posts";
+import PostForm from "./components/PostForm";
+import { Provider } from "react-redux";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
+const postSlice = createSlice({
+	name: "posts",
+	initialState: {
+		title: "",
+		body: "",
+	},
+	reducers: {
+		setTitle: (state, action) => {
+			state.title = action.payload.title;
+		},
+		setBody: (state, action) => {
+			state.body = action.payload.body;
+		},
+	},
+});
+export const { setBody, setTitle } = postSlice.actions;
+const store = configureStore({
+	reducer: postSlice.reducer,
+});
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<Provider store={store}>
+			<div className="App">
+				<PostForm />
+				<hr />
+				<Posts />
+			</div>
+		</Provider>
+	);
 }
 
 export default App;
